@@ -3,11 +3,13 @@ import Fastify, { FastifyServerFactory } from 'fastify'
 import helmet from 'fastify-helmet'
 import cors from 'fastify-cors'
 import fastifyStatic from 'fastify-static'
-import fastifyJwt from 'fastify-jwt'
+import { fastifyAuth0Verify } from 'fastify-auth0-verify'
 import {
-  API_JWT_SECRET,
   API_BASE_PATH,
-  API_UPLOAD_DIR
+  API_UPLOAD_DIR,
+  AUTH0_DOMAIN,
+  AUTH0_SECRET,
+  AUTH0_AUDIENCE
 } from '$/service/envValues'
 import server from '$/$server'
 
@@ -28,7 +30,11 @@ export const init = (serverFactory?: FastifyServerFactory) => {
       })
     })
   }
-  app.register(fastifyJwt, { secret: API_JWT_SECRET })
+  app.register(fastifyAuth0Verify, {
+    domain: AUTH0_DOMAIN,
+    secret: AUTH0_SECRET,
+    audience: AUTH0_AUDIENCE
+  })
   server(app, { basePath: API_BASE_PATH })
   return app
 }
