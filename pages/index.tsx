@@ -23,6 +23,7 @@ const Home = () => {
     }
   )
   console.log(data)
+  console.log(user)
 
   if (isLoading) {
     return <div>Loading your user information...</div>
