@@ -1,8 +1,9 @@
 import { defineHooks } from './$relay'
 
 export type AdditionalRequest = {
-  user: {
-    id: string
+  params: {
+    name: string
+    email: string
   }
 }
 

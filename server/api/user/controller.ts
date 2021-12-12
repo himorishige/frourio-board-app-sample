@@ -1,10 +1,18 @@
 import { defineController } from './$relay'
-import { getUserInfoById, changeIcon } from '$/service/user'
+import { getUserInfoById, upsertUserInfo } from '$/service/user'
 
-export default defineController(() => ({
-  get: ({ user }) => ({ status: 200, body: getUserInfoById(user.id) }),
-  post: async ({ user, body }) => ({
-    status: 201,
-    body: await changeIcon(user.id, body.icon)
+export default defineController(
+  { getUserInfoById, upsertUserInfo },
+  ({ getUserInfoById, upsertUserInfo }) => ({
+    get: async ({ query }) => {
+      const user = await getUserInfoById(query?.id)
+      return user ? { status: 200, body: user } : { status: 404 }
+    },
+    post: async ({ body }) => {
+      return {
+        status: 201,
+        body: await upsertUserInfo(body)
+      }
+    }
   })
-}))
+)

@@ -1,4 +1,4 @@
-import { MinLength } from 'class-validator'
+import { IsEmail, IsOptional, MaxLength, MinLength } from 'class-validator'
 
 export class LoginBody {
   @MinLength(2)
@@ -6,4 +6,15 @@ export class LoginBody {
 
   @MinLength(4)
   pass: string
+}
+
+export class UpsertUserInfoBody {
+  @IsEmail()
+  email: string
+
+  @MaxLength(255)
+  name: string
+
+  @IsOptional()
+  icon: string
 }

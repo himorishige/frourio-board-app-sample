@@ -1,16 +1,18 @@
-import type { AuthHeader, UserInfo } from '$/types'
-import type { ReadStream } from 'fs'
+import type { AuthHeader } from '$/types'
+import { UpsertUserInfoBody } from '$/validators'
+import { User } from '$prisma/client'
 
 export type Methods = {
   get: {
     reqHeaders: AuthHeader
-    resBody: UserInfo
+    query?: {
+      id?: number
+    }
+    resBody: User
   }
-
   post: {
     reqHeaders: AuthHeader
-    reqFormat: FormData
-    reqBody: { icon: File | ReadStream }
-    resBody: UserInfo
+    reqBody: UpsertUserInfoBody
+    resBody: User
   }
 }
