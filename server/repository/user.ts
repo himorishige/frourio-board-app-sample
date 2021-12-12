@@ -1,6 +1,5 @@
 import { prisma } from '$/lib/prismaClient'
-import { UpsertUserInfoBody } from '$/validators'
-import type { User } from '$prisma/client'
+import type { Prisma, User } from '$prisma/client'
 
 export const userRepository = {
   findUnique: async (id?: User['id']) => {
@@ -8,7 +7,7 @@ export const userRepository = {
       where: { id }
     })
   },
-  upsertUser: async (body: UpsertUserInfoBody) => {
+  upsert: async (body: Prisma.UserUpdateInput & Prisma.UserCreateInput) => {
     return await prisma.user.upsert({
       where: {
         email: body.email

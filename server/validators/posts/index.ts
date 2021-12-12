@@ -3,8 +3,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  MaxLength,
-  MinLength
+  Length
 } from 'class-validator'
 
 export class CreatePostBody {
@@ -13,25 +12,24 @@ export class CreatePostBody {
   authorId: number
 
   @IsString()
-  @MaxLength(255)
   @IsNotEmpty()
+  @Length(1, 255, { message: '1〜255文字で入力してください' })
   title: string
 
   @IsString()
-  @MaxLength(3000)
   @IsNotEmpty()
+  @Length(1, 3000, { message: '1〜3000文字で入力してください' })
   body: string
 }
 
 export class UpdatePostBody {
   @IsString()
   @IsOptional()
-  @MinLength(1)
-  @MaxLength(255)
+  @Length(1, 255, { message: '1〜255文字で入力してください' })
   title: string
 
   @IsString()
   @IsOptional()
-  @MaxLength(3000)
+  @Length(1, 3000, { message: '1〜3000文字で入力してください' })
   body: string
 }

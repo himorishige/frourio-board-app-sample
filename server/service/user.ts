@@ -13,6 +13,6 @@ export const getUserInfoById = depend(
 export const upsertUserInfo = depend(
   { userRepository },
   async ({ userRepository }, body: UpsertUserInfoBody) => {
-    return userRepository.upsertUser(body)
+    return userRepository.upsert(body)
   }
 )
