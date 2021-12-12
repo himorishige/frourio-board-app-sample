@@ -12,3 +12,42 @@ model Task {
   label String
   done  Boolean @default(false)
 }
+
+model User {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  email     String    @unique
+  name      String?
+  icon      String?
+  role      Role      @default(USER)
+  posts     Post[]
+  comment   Comment[]
+}
+
+model Post {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  title     String    @db.VarChar(255)
+  body      String    @db.VarChar(3000)
+  author    User?     @relation(fields: [authorId], references: [id])
+  authorId  Int?
+  comment   Comment[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  body      String   @db.VarChar(1000)
+  owner     User?    @relation(fields: [ownerId], references: [id])
+  ownerId   Int?
+  Post      Post?    @relation(fields: [postId], references: [id])
+  postId    Int?
+}
+
+enum Role {
+  USER
+  ADMIN
+}
