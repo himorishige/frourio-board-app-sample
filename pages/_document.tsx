@@ -12,16 +12,13 @@ const MyDocument = () => {
       <Head>
         {/* Change the contents of `<Head>` as needed. */}
         <meta name="description" content={description} />
-        <meta name="theme-color" content="#333" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content={title} />
         <meta property="og:url" content={url} />
         <meta property="og:description" content={description} />
         <meta property="og:site_name" content={title} />
-        <meta property="og:image" content={`${url}/ogp.png`} />
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="og:image" content={`${url}/favicon.png`} />
         <meta name="format-detection" content="telephone=no" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </Head>
       <body>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
