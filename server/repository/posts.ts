@@ -8,7 +8,11 @@ export const postsRepository = {
     })
   },
   findMany: async () => {
-    return await prisma.post.findMany()
+    return await prisma.post.findMany({
+      include: {
+        comment: true
+      }
+    })
   },
   create: async (body: Prisma.PostCreateInput) => {
     return await prisma.post.create({

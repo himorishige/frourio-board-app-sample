@@ -1,5 +1,5 @@
 import { CreatePostBody } from '$/validators'
-import type { Post } from '$prisma/client'
+import type { Post, Comment } from '$prisma/client'
 
 export type Methods = {
   get: {
@@ -7,7 +7,7 @@ export type Methods = {
       limit?: number
     }
 
-    resBody: Post[]
+    resBody: Array<Post & { comment?: Comment[] }>
   }
   post: {
     reqBody: CreatePostBody
