@@ -4,13 +4,21 @@ import { Post, Prisma } from '.prisma/client'
 export const postsRepository = {
   findUnique: async (id?: Post['id']) => {
     return await prisma.post.findUnique({
-      where: { id }
+      where: { id },
+      include: {
+        author: true,
+        comment: true
+      }
     })
   },
   findMany: async () => {
     return await prisma.post.findMany({
       include: {
+        author: true,
         comment: true
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
     })
   },

@@ -2,7 +2,8 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Auth0Provider } from '@auth0/auth0-react'
 import { ChakraProvider } from '@chakra-ui/react'
-import { theme } from '~/lib/theme'
+import { theme } from '~/src/lib/theme'
+import { RecoilRoot } from 'recoil'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -16,9 +17,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       scope="read:current_user"
       useRefreshTokens={true}
     >
-      <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
+      <RecoilRoot>
+        <ChakraProvider theme={theme}>
+          <Component {...pageProps} />
+        </ChakraProvider>
+      </RecoilRoot>
     </Auth0Provider>
   )
 }
