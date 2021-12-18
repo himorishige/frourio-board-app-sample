@@ -2,15 +2,6 @@ import fastify from 'fastify'
 import controller from '$/api/posts/controller'
 import { Role } from '$prisma/client'
 
-const dummyComment = {
-  id: 1,
-  body: 'body',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  ownerId: 1,
-  postId: 1
-}
-
 const dummyUser = {
   id: 1,
   createdAt: new Date(),
@@ -19,6 +10,16 @@ const dummyUser = {
   name: 'Hoge',
   icon: 'src',
   role: Role.ADMIN
+}
+
+const dummyComment = {
+  id: 1,
+  body: 'body',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  ownerId: 1,
+  postId: 1,
+  owner: dummyUser
 }
 
 const dummyPost = {

@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/layout'
+import { Box, Heading, Text } from '@chakra-ui/layout'
 import { Layout } from '~/src/components/Layout'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Button, Input, Textarea } from '@chakra-ui/react'
@@ -53,12 +53,27 @@ const PostsCreate = () => {
 
   return (
     <Layout>
-      <Box>create</Box>
+      <Box mb={4}>
+        <Heading size="lg">投稿</Heading>
+      </Box>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input {...register('title', { required: true })} />
-        <Textarea {...register('body', { required: true })} />
-        {errors.title && <span>required</span>}
-        <Button type="submit">submit</Button>
+        <Input
+          placeholder="タイトル"
+          mb={4}
+          {...register('title', { required: true })}
+        />
+        <Textarea
+          placeholder="本文"
+          mb={4}
+          {...register('body', { required: true })}
+        />
+        <Button type="submit" colorScheme="teal">
+          Post
+        </Button>
+        <Box>
+          {errors.title ||
+            (errors.body && <Text color="red">タイトルと本文は必須です</Text>)}
+        </Box>
       </form>
     </Layout>
   )

@@ -5,7 +5,9 @@ import type { Post, User, Comment } from '$prisma/client'
 export type Methods = {
   get: {
     reqHeaders: AuthHeader
-    resBody: Post & { comment: Comment[] } & { author: User | null }
+    resBody: Post & { comment: Array<Comment & { owner?: User | null }> } & {
+      author: User | null
+    }
   }
   patch: {
     reqBody: UpdatePostBody

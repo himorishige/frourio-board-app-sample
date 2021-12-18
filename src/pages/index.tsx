@@ -3,12 +3,13 @@ import { useAuth } from '~/src/hooks/useAuth'
 import useAspidaSWR from '@aspida/swr'
 import { apiClient } from '~/src/utils/apiClient'
 import { Layout } from '~/src/components/Layout'
-import { Box, Flex, Heading } from '@chakra-ui/layout'
+import { Box, Container, Flex, Heading, Text, VStack } from '@chakra-ui/layout'
 import { WrappedLink } from '~/src/components/Link'
 import { echoLocalDateTime } from '../utils/dateUtil'
 import { Avatar } from '@chakra-ui/avatar'
 import { Tag, TagLabel } from '@chakra-ui/tag'
 import { ChatIcon } from '@chakra-ui/icons'
+import { Loading } from '../components/Loading'
 
 const Home: React.VFC = () => {
   const { token, user } = useAuth()
@@ -24,34 +25,48 @@ const Home: React.VFC = () => {
 
   return (
     <Layout>
-      <div>
-        {posts?.map((post) => (
-          <Box key={post.id} overflow="hidden" py={4}>
-            <Box>
-              <WrappedLink href={`/posts/${post.id}`}>
-                <Heading size="lg">{post.title}</Heading>
-              </WrappedLink>
-            </Box>
-            <Flex py={4} alignItems="center">
-              <Tag size="lg" colorScheme="blue" borderRadius="full">
+      <Box>
+        {posts ? (
+          posts?.map((post) => (
+            <Box
+              key={post.id}
+              overflow="hidden"
+              p={4}
+              border="1px"
+              borderRadius={8}
+              borderColor="gray.100"
+              my={4}
+            >
+              <Flex alignItems="center">
                 <Avatar
                   src={post.author?.icon ?? 'https://bit.ly/broken-link'}
-                  size="xs"
+                  size="md"
                   name={post.author?.name ?? 'NO NAME'}
-                  ml={-1}
                   mr={2}
                 />
-                <TagLabel>{post.author?.name ?? 'NO NAME'}</TagLabel>
-                <TagLabel ml={2}>{echoLocalDateTime(post.createdAt)}</TagLabel>
-                <TagLabel ml={2}>
-                  <ChatIcon mr={2} />
-                  {post.comment?.length}
-                </TagLabel>
-              </Tag>
-            </Flex>
-          </Box>
-        ))}
-      </div>
+                <WrappedLink href={`/posts/${post.id}`}>
+                  <Heading size="lg" d="inline">
+                    {post.title}
+                  </Heading>
+                </WrappedLink>
+              </Flex>
+              <Flex alignItems="center" mt={4}>
+                <Tag size="lg" colorScheme="gray" borderRadius="full">
+                  <TagLabel ml={2}>
+                    {echoLocalDateTime(post.createdAt)}
+                  </TagLabel>
+                  <TagLabel ml={2}>
+                    <ChatIcon mr={2} />
+                    {post.comment?.length}
+                  </TagLabel>
+                </Tag>
+              </Flex>
+            </Box>
+          ))
+        ) : (
+          <Text>loading...</Text>
+        )}
+      </Box>
     </Layout>
   )
 }

@@ -2,8 +2,9 @@ import { useRouter } from 'next/router'
 import { useAuth } from '~/src/hooks/useAuth'
 import { Header } from './Header'
 import { Footer } from './Footer'
-import LoginButton from './LoginButton'
-import { Container } from '@chakra-ui/layout'
+import { Container, Flex } from '@chakra-ui/layout'
+import { Login } from './Login'
+import { Loading } from './Loading'
 
 type Props = {
   children: React.ReactNode
@@ -14,16 +15,15 @@ export const Layout: React.VFC<Props> = (props) => {
   const { isAuthenticated, isLoading, error, token } = useAuth()
 
   if (isLoading) {
-    return <div>Loading your user information...</div>
+    return (
+      <Flex h="100vh" w="100%" alignItems="center" justifyContent="center">
+        <Loading />
+      </Flex>
+    )
   }
 
   if (!isAuthenticated) {
-    return (
-      <div>
-        You must first sign in to access your subscriptions.
-        <LoginButton />
-      </div>
-    )
+    return <Login />
   }
 
   if (error) {
@@ -34,7 +34,9 @@ export const Layout: React.VFC<Props> = (props) => {
   return (
     <>
       <Header />
-      <Container maxW="container.lg">{props.children}</Container>
+      <Container maxW="container.lg" minH="calc(100vh - 80px - 56px)">
+        {props.children}
+      </Container>
       <Footer />
     </>
   )

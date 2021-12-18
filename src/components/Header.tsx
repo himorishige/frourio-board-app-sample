@@ -35,7 +35,7 @@ export const Header: React.VFC = () => {
         <Spacer />
         <Flex alignItems="center">
           <Box mr={4}>
-            <Button colorScheme="blue" onClick={handleNewPost}>
+            <Button colorScheme="teal" onClick={handleNewPost}>
               Post
             </Button>
           </Box>
@@ -56,7 +56,7 @@ export const Header: React.VFC = () => {
                 </PopoverBody>
                 <PopoverFooter d="flex" justifyContent="flex-end">
                   <Button
-                    colorScheme="blue"
+                    colorScheme="teal"
                     onClick={() => logout({ returnTo: window.location.origin })}
                   >
                     Logout

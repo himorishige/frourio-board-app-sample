@@ -7,7 +7,11 @@ export const postsRepository = {
       where: { id },
       include: {
         author: true,
-        comment: true
+        comment: {
+          include: {
+            owner: true
+          }
+        }
       }
     })
   },

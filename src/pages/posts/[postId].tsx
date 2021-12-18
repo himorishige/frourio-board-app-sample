@@ -4,7 +4,7 @@ import { useAuth } from '~/src/hooks/useAuth'
 import { apiClient } from '~/src/utils/apiClient'
 import { Layout } from '~/src/components/Layout'
 import Error from 'next/error'
-import { Box, Flex, Heading } from '@chakra-ui/layout'
+import { Box, Flex, Heading, Text } from '@chakra-ui/layout'
 import { WrappedLink } from '~/src/components/Link'
 import { echoLocalDateTime } from '~/src/utils/dateUtil'
 import { Avatar } from '@chakra-ui/avatar'
@@ -15,6 +15,9 @@ import { useSnagBar } from '~/src/hooks/useToast'
 import { Textarea } from '@chakra-ui/textarea'
 import { Button } from '@chakra-ui/button'
 import { useCallback, useEffect } from 'react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 
 type Inputs = {
   body: string
@@ -88,18 +91,17 @@ const PostsDetail: React.VFC = () => {
   return (
     <Layout>
       <Box key={post.id} overflow="hidden" py={4}>
-        <Box>
+        <Flex alignItems="center">
+          <Avatar
+            src={post.author?.icon ?? 'https://bit.ly/broken-link'}
+            size="md"
+            name={post.author?.name ?? 'NO NAME'}
+            mr={2}
+          />
           <Heading size="lg">{post.title}</Heading>
-        </Box>
+        </Flex>
         <Flex py={4} alignItems="center">
-          <Tag size="lg" colorScheme="blue" borderRadius="full">
-            <Avatar
-              src={post.author?.icon ?? 'https://bit.ly/broken-link'}
-              size="xs"
-              name={post.author?.name ?? 'NO NAME'}
-              ml={-1}
-              mr={2}
-            />
+          <Tag size="lg" colorScheme="gray" borderRadius="full">
             <TagLabel>{post.author?.name ?? 'NO NAME'}</TagLabel>
             <TagLabel ml={2}>{echoLocalDateTime(post.createdAt)}</TagLabel>
             <TagLabel ml={2}>
@@ -109,14 +111,54 @@ const PostsDetail: React.VFC = () => {
           </Tag>
         </Flex>
       </Box>
-      <Box py={4}>{post.body}</Box>
+      <Box p={4} mb={8} border="1px" borderColor="gray.200" borderRadius={4}>
+        <ReactMarkdown
+          components={ChakraUIRenderer()}
+          remarkPlugins={[remarkGfm]}
+          skipHtml
+        >
+          {post.body}
+        </ReactMarkdown>
+      </Box>
+      {!!post.comment.length && (
+        <Box mb={4}>
+          <Heading size="md">コメント</Heading>
+        </Box>
+      )}
       {!!post.comment.length &&
-        post.comment.map((item) => <Box key={item.id}>{item.body}</Box>)}
+        post.comment.map((item) => (
+          <Box key={item.id}>
+            <Tag py={1} size="md" colorScheme="gray" borderRadius="full">
+              <Avatar
+                src={item.owner?.icon ?? 'https://bit.ly/broken-link'}
+                size="xs"
+                name={item.owner?.name ?? 'NO NAME'}
+                mr={2}
+              />
+              <TagLabel mr={1}>{item.owner?.name}</TagLabel>
+              <TagLabel>{echoLocalDateTime(item.createdAt)}</TagLabel>
+            </Tag>
+            <Box p={4}>
+              <ReactMarkdown
+                components={ChakraUIRenderer()}
+                remarkPlugins={[remarkGfm]}
+                skipHtml
+              >
+                {item.body}
+              </ReactMarkdown>
+            </Box>
+          </Box>
+        ))}
+      <Box mb={4}>
+        <Heading size="md">コメントの投稿</Heading>
+      </Box>
       <Box>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Textarea {...register('body', { required: true })} />
-          {errors.body && <span>required</span>}
+          <Textarea mb={4} {...register('body', { required: true })} />
           <Button type="submit">submit</Button>
+          <Box mt={4}>
+            {errors.body && <Text color="red">コメントが未入力です</Text>}
+          </Box>
         </form>
       </Box>
     </Layout>
