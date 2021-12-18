@@ -40,12 +40,12 @@ const Home: React.VFC = () => {
               <Flex alignItems="center">
                 <Avatar
                   src={post.author?.icon ?? 'https://bit.ly/broken-link'}
-                  size="md"
+                  size="sm"
                   name={post.author?.name ?? 'NO NAME'}
                   mr={2}
                 />
                 <WrappedLink href={`/posts/${post.id}`}>
-                  <Heading size="lg" d="inline">
+                  <Heading size="md" d="inline">
                     {post.title}
                   </Heading>
                 </WrappedLink>

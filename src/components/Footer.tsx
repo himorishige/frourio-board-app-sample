@@ -3,11 +3,11 @@ import { NextComponentType } from 'next'
 
 export const Footer: NextComponentType = () => {
   return (
-    <Box bg="gray.300">
+    <Box bg="cyan.900">
       <Container maxW="container.lg">
         <Flex py={4}>
           <Box alignItems="center">
-            <Text>Footer</Text>
+            <Text color="white">Footer</Text>
           </Box>
         </Flex>
       </Container>
