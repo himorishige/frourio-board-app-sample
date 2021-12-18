@@ -18,6 +18,7 @@ import { useCallback, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
+import { useRecoilState } from 'recoil'
 
 type Inputs = {
   body: string
@@ -51,6 +52,8 @@ const PostsDetail: React.VFC = () => {
     // revalidateOnMount: true
   })
 
+  // const userRecoilState = useRecoilState()
+
   const createComment = useCallback(
     async (ownerId: number, postId: number, body: string) => {
       await apiClient.comments.post({
@@ -67,6 +70,29 @@ const PostsDetail: React.VFC = () => {
     },
     [token]
   )
+
+  const deletePost = async () => {
+    try {
+      if (window.confirm('投稿を削除しますか？')) {
+        if (token && postId) {
+          await apiClient.posts._postId(+postId).delete({
+            headers: {
+              authorization: `Bearer ${token}`
+            }
+          })
+          snagBar('投稿を削除しました', 'bottom', 'success')
+          router.push('/')
+        } else {
+          throw error
+        }
+      } else {
+        return
+      }
+    } catch (error) {
+      snagBar('投稿の削除に失敗しました', 'bottom', 'error')
+      console.log(error)
+    }
+  }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
@@ -100,7 +126,7 @@ const PostsDetail: React.VFC = () => {
           />
           <Heading size="lg">{post.title}</Heading>
         </Flex>
-        <Flex py={4} alignItems="center">
+        <Flex py={4} alignItems="center" justifyContent="space-between">
           <Tag size="lg" colorScheme="gray" borderRadius="full">
             <TagLabel>{post.author?.name ?? 'NO NAME'}</TagLabel>
             <TagLabel ml={2}>{echoLocalDateTime(post.createdAt)}</TagLabel>
@@ -109,6 +135,13 @@ const PostsDetail: React.VFC = () => {
               {post.comment?.length}
             </TagLabel>
           </Tag>
+          <Box>
+            {post.authorId === userState.id && (
+              <Button type="button" colorScheme="red" onClick={deletePost}>
+                削除
+              </Button>
+            )}
+          </Box>
         </Flex>
       </Box>
       <Box p={4} mb={8} border="1px" borderColor="gray.200" borderRadius={4}>
