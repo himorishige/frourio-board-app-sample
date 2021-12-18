@@ -10,10 +10,12 @@ export type Methods = {
     }
   }
   patch: {
+    reqHeaders: AuthHeader
     reqBody: UpdatePostBody
     resBody: { message: string }
   }
   delete: {
+    reqHeaders: AuthHeader
     resBody: { message: string }
   }
 }
