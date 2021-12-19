@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { apiClient } from '~/src/utils/apiClient'
 import { useRecoilState } from 'recoil'
 import { userInitialState } from '../recoil/atoms'
+import { AUTH0_AUDIENCE } from '../constants'
 
 export const useAuth = () => {
   const {
@@ -21,7 +22,7 @@ export const useAuth = () => {
   if (isAuthenticated && !isLoading) {
     ;(async () => {
       await getAccessTokenSilently({
-        audience: process.env.NEXT_PUBLIC_AUTH0_AUDIENCE,
+        audience: AUTH0_AUDIENCE,
         scope: 'read:user'
       }).then(setToken)
     })()
@@ -44,7 +45,7 @@ export const useAuth = () => {
           .then((state) => setUserState(state.body))
       }
     })()
-  }, [token])
+  }, [])
 
   return { token, user, isAuthenticated, isLoading, error, logout, userState }
 }
