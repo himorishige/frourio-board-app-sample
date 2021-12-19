@@ -4,7 +4,7 @@ import { useAuth } from '~/src/hooks/useAuth'
 import { apiClient } from '~/src/utils/apiClient'
 import { Layout } from '~/src/components/Layout'
 import Error from 'next/error'
-import { Box, Flex, Heading, Text } from '@chakra-ui/layout'
+import { Box, Container, Flex, Heading, Text } from '@chakra-ui/layout'
 import { echoLocalDateTime } from '~/src/utils/dateUtil'
 import { Avatar } from '@chakra-ui/avatar'
 import { Tag, TagLabel } from '@chakra-ui/tag'
@@ -86,6 +86,29 @@ const PostsDetail: VFC = () => {
     }
   }
 
+  const deleteComment = async (commentId: number) => {
+    try {
+      if (window.confirm('コメントを削除しますか？')) {
+        if (token && commentId) {
+          await apiClient.comments._commentId(commentId).delete({
+            headers: {
+              authorization: `Bearer ${token}`
+            }
+          })
+          snagBar('コメントを削除しました', 'bottom', 'success')
+          revalidate()
+        } else {
+          throw error
+        }
+      } else {
+        return
+      }
+    } catch (error) {
+      snagBar('コメントの削除に失敗しました', 'bottom', 'error')
+      console.log(error)
+    }
+  }
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       if (token && postId) {
@@ -145,46 +168,75 @@ const PostsDetail: VFC = () => {
           {post.body}
         </ReactMarkdown>
       </Box>
-      {!!post.comment.length && (
-        <Box mb={4}>
-          <Heading size="md">コメント</Heading>
-        </Box>
-      )}
-      {!!post.comment.length &&
-        post.comment.map((item) => (
-          <Box key={item.id}>
-            <Tag py={1} size="md" colorScheme="gray" borderRadius="full">
-              <Avatar
-                src={item.owner?.icon ?? 'https://bit.ly/broken-link'}
-                size="xs"
-                name={item.owner?.name ?? 'NO NAME'}
-                mr={2}
-              />
-              <TagLabel mr={1}>{item.owner?.name}</TagLabel>
-              <TagLabel>{echoLocalDateTime(item.createdAt)}</TagLabel>
-            </Tag>
-            <Box p={4}>
-              <ReactMarkdown
-                components={ChakraUIRenderer()}
-                remarkPlugins={[remarkGfm]}
-                skipHtml
-              >
-                {item.body}
-              </ReactMarkdown>
+      <Box pb="240px">
+        {!!post.comment.length && (
+          <Box mb={4}>
+            <Heading size="md">
+              <ChatIcon mr={2} />
+              Comment
+            </Heading>
+          </Box>
+        )}
+        {!!post.comment.length &&
+          post.comment.map((item) => (
+            <Box key={item.id}>
+              <Flex justifyContent="space-between" alignItems="center">
+                <Box>
+                  <Tag py={1} size="md" colorScheme="gray" borderRadius="full">
+                    <Avatar
+                      src={item.owner?.icon ?? 'https://bit.ly/broken-link'}
+                      size="xs"
+                      name={item.owner?.name ?? 'NO NAME'}
+                      mr={2}
+                    />
+                    <TagLabel mr={1}>{item.owner?.name}</TagLabel>
+                    <TagLabel>{echoLocalDateTime(item.createdAt)}</TagLabel>
+                  </Tag>
+                </Box>
+                {item.ownerId === userState.id && (
+                  <Button
+                    colorScheme="red"
+                    onClick={() => deleteComment(item.id)}
+                  >
+                    削除
+                  </Button>
+                )}
+              </Flex>
+              <Box p={4}>
+                <ReactMarkdown
+                  components={ChakraUIRenderer()}
+                  remarkPlugins={[remarkGfm]}
+                  skipHtml
+                >
+                  {item.body}
+                </ReactMarkdown>
+              </Box>
             </Box>
-          </Box>
-        ))}
-      <Box mb={4}>
-        <Heading size="md">コメントの投稿</Heading>
+          ))}
       </Box>
-      <Box>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Textarea mb={4} {...register('body', { required: true })} />
-          <Button type="submit">submit</Button>
-          <Box mt={4}>
-            {errors.body && <Text color="red">コメントが未入力です</Text>}
+      <Box pos="fixed" bottom="0" left="0" w="100%" bgColor="cyan.800" py={6}>
+        <Container maxW="container.lg">
+          <Box mb={4}>
+            <Heading size="md" color="white">
+              コメントの投稿
+            </Heading>
           </Box>
-        </form>
+          <Box>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Textarea
+                bgColor="white"
+                mb={4}
+                {...register('body', { required: true })}
+              />
+              <Button type="submit" colorScheme="teal">
+                コメントの投稿
+              </Button>
+              <Box mt={4}>
+                {errors.body && <Text color="red">コメントが未入力です</Text>}
+              </Box>
+            </form>
+          </Box>
+        </Container>
       </Box>
     </Layout>
   )
