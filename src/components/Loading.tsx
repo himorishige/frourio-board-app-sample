@@ -1,7 +1,8 @@
 import { Flex } from '@chakra-ui/layout'
 import { Spinner } from '@chakra-ui/spinner'
+import { VFC } from 'react'
 
-export const Loading = () => {
+export const Loading: VFC = () => {
   return (
     <Flex justifyContent="center" alignItems="center" minH="100%">
       <Spinner

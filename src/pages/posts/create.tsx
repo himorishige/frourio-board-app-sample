@@ -6,13 +6,14 @@ import { useAuth } from '~/src/hooks/useAuth'
 import { apiClient } from '~/src/utils/apiClient'
 import { useRouter } from 'next/router'
 import { useSnagBar } from '~/src/hooks/useToast'
+import { VFC } from 'react'
 
 type Inputs = {
   title: string
   body: string
 }
 
-const PostsCreate = () => {
+const PostsCreate: VFC = () => {
   const { token, userState } = useAuth()
   const { snagBar } = useSnagBar()
   const router = useRouter()
@@ -46,10 +47,6 @@ const PostsCreate = () => {
       console.log(error)
     }
   }
-
-  console.log('state', userState)
-
-  console.log(watch('body'))
 
   return (
     <Layout>

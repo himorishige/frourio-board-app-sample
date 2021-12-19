@@ -1,7 +1,8 @@
 import NextLink from 'next/link'
 import { Link, LinkProps } from '@chakra-ui/react'
+import { VFC } from 'react'
 
-export const WrappedLink: React.FC<LinkProps> = (props) => {
+export const WrappedLink: VFC<LinkProps> = (props) => {
   return (
     <NextLink href={props.href ?? ''}>
       <Link

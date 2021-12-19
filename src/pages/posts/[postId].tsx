@@ -5,7 +5,6 @@ import { apiClient } from '~/src/utils/apiClient'
 import { Layout } from '~/src/components/Layout'
 import Error from 'next/error'
 import { Box, Flex, Heading, Text } from '@chakra-ui/layout'
-import { WrappedLink } from '~/src/components/Link'
 import { echoLocalDateTime } from '~/src/utils/dateUtil'
 import { Avatar } from '@chakra-ui/avatar'
 import { Tag, TagLabel } from '@chakra-ui/tag'
@@ -14,17 +13,16 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { useSnagBar } from '~/src/hooks/useToast'
 import { Textarea } from '@chakra-ui/textarea'
 import { Button } from '@chakra-ui/button'
-import { useCallback, useEffect } from 'react'
+import { useCallback, VFC } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
-import { useRecoilState } from 'recoil'
 
 type Inputs = {
   body: string
 }
 
-const PostsDetail: React.VFC = () => {
+const PostsDetail: VFC = () => {
   const router = useRouter()
   const { postId } = router.query
   const { token, userState } = useAuth()
@@ -32,7 +30,6 @@ const PostsDetail: React.VFC = () => {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors }
   } = useForm<Inputs>()
@@ -41,18 +38,13 @@ const PostsDetail: React.VFC = () => {
   const {
     data: post,
     error,
-    isValidating,
     revalidate
   } = useAspidaSWR(apiClient.posts._postId(Number(postId)), {
     headers: {
       authorization: `Bearer ${token}`
     },
     enabled: !!token
-    // revalidateOnFocus: false
-    // revalidateOnMount: true
   })
-
-  // const userRecoilState = useRecoilState()
 
   const createComment = useCallback(
     async (ownerId: number, postId: number, body: string) => {

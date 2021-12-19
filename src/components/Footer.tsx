@@ -1,7 +1,7 @@
 import { Box, Container, Flex, Text } from '@chakra-ui/layout'
-import { NextComponentType } from 'next'
+import { VFC } from 'react'
 
-export const Footer: NextComponentType = () => {
+export const Footer: VFC = () => {
   return (
     <Box bg="cyan.900">
       <Container maxW="container.lg">

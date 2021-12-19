@@ -4,8 +4,9 @@ import { apiClient } from '~/src/utils/apiClient'
 import { Layout } from '~/src/components/Layout'
 import { Box, Text } from '@chakra-ui/layout'
 import { PostItem } from '~/src/components/PostItem'
+import { VFC } from 'react'
 
-const Home: React.VFC = () => {
+const Home: VFC = () => {
   const { token } = useAuth()
 
   const { data: posts } = useAspidaSWR(apiClient.posts, {
@@ -15,7 +16,6 @@ const Home: React.VFC = () => {
     enabled: !!token,
     revalidateOnFocus: false
   })
-  console.log(posts)
 
   return (
     <Layout>

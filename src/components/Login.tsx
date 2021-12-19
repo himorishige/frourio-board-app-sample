@@ -1,7 +1,8 @@
 import { Container, Flex, Heading } from '@chakra-ui/layout'
-import LoginButton from './LoginButton'
+import { VFC } from 'react'
+import LoginButton from '~/src/components/LoginButton'
 
-export const Login = () => {
+export const Login: VFC = () => {
   return (
     <Container maxW="container.lg">
       <Flex

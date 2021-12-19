@@ -1,18 +1,17 @@
-import { useRouter } from 'next/router'
 import { useAuth } from '~/src/hooks/useAuth'
-import { Header } from './Header'
-import { Footer } from './Footer'
+import { Header } from '~/src/components/Header'
+import { Footer } from '~/src/components/Footer'
 import { Container, Flex } from '@chakra-ui/layout'
-import { Login } from './Login'
-import { Loading } from './Loading'
+import { Login } from '~/src/components/Login'
+import { Loading } from '~/src/components/Loading'
+import { VFC } from 'react'
 
 type Props = {
   children: React.ReactNode
 }
 
-export const Layout: React.VFC<Props> = (props) => {
-  const router = useRouter()
-  const { isAuthenticated, isLoading, error, token } = useAuth()
+export const Layout: VFC<Props> = (props) => {
+  const { isAuthenticated, isLoading, error } = useAuth()
 
   if (isLoading) {
     return (

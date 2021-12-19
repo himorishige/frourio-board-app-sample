@@ -1,4 +1,4 @@
-import { atom, useRecoilState } from 'recoil'
+import { atom } from 'recoil'
 import { User } from '$prisma/client'
 
 export const userInitialState = atom({

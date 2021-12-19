@@ -12,11 +12,12 @@ import {
   PopoverTrigger
 } from '@chakra-ui/popover'
 import { Portal } from '@chakra-ui/portal'
-import { WrappedLink } from './Link'
+import { WrappedLink } from '~/src/components/Link'
 import { useRouter } from 'next/router'
-import { useAuth } from '../hooks/useAuth'
+import { useAuth } from '~/src/hooks/useAuth'
+import { VFC } from 'react'
 
-export const Header: React.VFC = () => {
+export const Header: VFC = () => {
   const router = useRouter()
   const { user, logout } = useAuth()
 
