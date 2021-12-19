@@ -36,30 +36,17 @@ const dummyPost = {
 test('dependency injection into controller', async () => {
   const injectedController = controller.inject((deps) => ({
     getPosts: deps.getPosts.inject({
-      postsRepository: {
-        findMany: () => {
-          return Promise.resolve([dummyPost, dummyPost])
-        },
-        findUnique: () => {
-          return Promise.resolve(dummyPost)
-        },
-        create: () => {
-          return Promise.resolve(dummyPost)
-        },
-        delete: () => {
-          return Promise.resolve(dummyPost)
-        },
-        update: () => {
-          return Promise.resolve(dummyPost)
-        }
+      findMany: () => {
+        return Promise.resolve([dummyPost, dummyPost])
       }
     })
   }))(fastify())
 
-  // const limit = 3
-  // const res = await injectedController.get({
-  //   query: { limit }
-  // })
+  const limit = 3
+  const res = await injectedController.get({
+    headers: { authorization: '' },
+    query: { limit }
+  })
 
-  // expect(res.body).toHaveLength(limit)
+  expect(res.body).toHaveLength(limit)
 })
