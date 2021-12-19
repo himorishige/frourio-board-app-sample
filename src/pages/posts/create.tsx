@@ -49,7 +49,7 @@ const PostsCreate: VFC = () => {
 
   return (
     <Layout>
-      <Box mb={4}>
+      <Box mb={4} py={4}>
         <Heading size="lg">投稿</Heading>
       </Box>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -61,6 +61,7 @@ const PostsCreate: VFC = () => {
         <Textarea
           placeholder="本文"
           mb={4}
+          rows={10}
           {...register('body', { required: true })}
         />
         <Button type="submit" colorScheme="teal">

@@ -19,7 +19,7 @@ const Home: VFC = () => {
 
   return (
     <Layout>
-      <Box>
+      <Box py={4}>
         {posts ? (
           posts?.map((post) => <PostItem key={post.id} post={post} />)
         ) : (

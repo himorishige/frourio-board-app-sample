@@ -24,7 +24,7 @@ export const PostItem: VFC<Props> = ({ post }) => {
       border="1px"
       borderRadius={8}
       borderColor="gray.100"
-      my={4}
+      mb={4}
     >
       <Flex alignItems="center">
         <Avatar

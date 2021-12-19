@@ -13,7 +13,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { useSnagBar } from '~/src/hooks/useToast'
 import { Textarea } from '@chakra-ui/textarea'
 import { Button } from '@chakra-ui/button'
-import { useCallback, VFC } from 'react'
+import React, { useCallback, useEffect, useRef, VFC } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
@@ -26,7 +26,6 @@ const PostsDetail: VFC = () => {
   const router = useRouter()
   const { postId } = router.query
   const { token, userState } = useAuth()
-  console.log(postId)
   const {
     register,
     handleSubmit,
@@ -34,6 +33,7 @@ const PostsDetail: VFC = () => {
     formState: { errors }
   } = useForm<Inputs>()
   const { snagBar } = useSnagBar()
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   const {
     data: post,
@@ -58,7 +58,16 @@ const PostsDetail: VFC = () => {
           body
         }
       })
-      revalidate()
+      revalidate().then(() => {
+        const top = scrollRef?.current?.getBoundingClientRect().top ?? 0
+        const offsetTop = window.pageYOffset
+        const buffer = 0
+        window.scrollTo({
+          top: top + offsetTop + buffer,
+
+          behavior: 'smooth'
+        })
+      })
     },
     [token]
   )
@@ -178,40 +187,47 @@ const PostsDetail: VFC = () => {
           </Box>
         )}
         {!!post.comment.length &&
-          post.comment.map((item) => (
-            <Box key={item.id}>
-              <Flex justifyContent="space-between" alignItems="center">
-                <Box>
-                  <Tag py={1} size="md" colorScheme="gray" borderRadius="full">
-                    <Avatar
-                      src={item.owner?.icon ?? 'https://bit.ly/broken-link'}
-                      size="xs"
-                      name={item.owner?.name ?? 'NO NAME'}
-                      mr={2}
-                    />
-                    <TagLabel mr={1}>{item.owner?.name}</TagLabel>
-                    <TagLabel>{echoLocalDateTime(item.createdAt)}</TagLabel>
-                  </Tag>
-                </Box>
-                {item.ownerId === userState.id && (
-                  <Button
-                    colorScheme="red"
-                    onClick={() => deleteComment(item.id)}
+          post.comment.map((item, i, array) => (
+            <React.Fragment key={item.id}>
+              <Box ref={array.length - 1 === i ? scrollRef : null}>
+                <Flex justifyContent="space-between" alignItems="center">
+                  <Box>
+                    <Tag
+                      py={1}
+                      size="md"
+                      colorScheme="gray"
+                      borderRadius="full"
+                    >
+                      <Avatar
+                        src={item.owner?.icon ?? 'https://bit.ly/broken-link'}
+                        size="xs"
+                        name={item.owner?.name ?? 'NO NAME'}
+                        mr={2}
+                      />
+                      <TagLabel mr={1}>{item.owner?.name}</TagLabel>
+                      <TagLabel>{echoLocalDateTime(item.createdAt)}</TagLabel>
+                    </Tag>
+                  </Box>
+                  {item.ownerId === userState.id && (
+                    <Button
+                      colorScheme="red"
+                      onClick={() => deleteComment(item.id)}
+                    >
+                      削除
+                    </Button>
+                  )}
+                </Flex>
+                <Box p={4}>
+                  <ReactMarkdown
+                    components={ChakraUIRenderer()}
+                    remarkPlugins={[remarkGfm]}
+                    skipHtml
                   >
-                    削除
-                  </Button>
-                )}
-              </Flex>
-              <Box p={4}>
-                <ReactMarkdown
-                  components={ChakraUIRenderer()}
-                  remarkPlugins={[remarkGfm]}
-                  skipHtml
-                >
-                  {item.body}
-                </ReactMarkdown>
+                    {item.body}
+                  </ReactMarkdown>
+                </Box>
               </Box>
-            </Box>
+            </React.Fragment>
           ))}
       </Box>
       <Box pos="fixed" bottom="0" left="0" w="100%" bgColor="cyan.800" py={6}>
