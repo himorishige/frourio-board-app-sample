@@ -1,36 +1,40 @@
 import { depend } from 'velona'
-import { commentsRepository } from '$/repository/comments'
+import {
+  findMany,
+  findUnique,
+  create,
+  update,
+  remove
+} from '$/repository/comments'
 import { CreateCommentBody, UpdateCommentBody } from '$/validators'
 import { Comment } from '.prisma/client'
 
 export const getComments = depend(
-  { commentsRepository },
-  async ({ commentsRepository }, limit?: number) => {
-    return (await commentsRepository.findMany()).slice(0, limit)
+  { findMany },
+  async ({ findMany }, limit?: number) => {
+    return (await findMany()).slice(0, limit)
   }
 )
 
 export const getComment = depend(
-  { commentsRepository },
-  async ({ commentsRepository }, id?: Comment['id']) =>
-    commentsRepository.findUnique(id)
+  { findUnique },
+  async ({ findUnique }, id?: Comment['id']) => findUnique(id)
 )
 
 export const createComment = depend(
-  { commentsRepository },
-  async ({ commentsRepository }, body: CreateCommentBody) => {
-    return await commentsRepository.create(body)
+  { create },
+  async ({ create }, body: CreateCommentBody) => {
+    return await create(body)
   }
 )
 
 export const updateComment = depend(
-  { commentsRepository },
-  async ({ commentsRepository }, id: Comment['id'], body: UpdateCommentBody) =>
-    commentsRepository.update(id, body)
+  { update },
+  async ({ update }, id: Comment['id'], body: UpdateCommentBody) =>
+    update(id, body)
 )
 
 export const deleteComment = depend(
-  { commentsRepository },
-  async ({ commentsRepository }, id: Comment['id']) =>
-    commentsRepository.delete(id)
+  { remove },
+  async ({ remove }, id: Comment['id']) => remove(id)
 )
