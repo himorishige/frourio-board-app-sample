@@ -33,7 +33,7 @@ export const Layout: VFC<Props> = (props) => {
   return (
     <>
       <Header />
-      <Container maxW="container.lg" minH="calc(100vh - 80px - 56px)">
+      <Container maxW="container.lg" minH="calc(100vh - 80px - 56px)" d="flex">
         {props.children}
       </Container>
       <Footer />

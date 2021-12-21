@@ -4,7 +4,7 @@ import { VFC } from 'react'
 
 export const Loading: VFC = () => {
   return (
-    <Flex justifyContent="center" alignItems="center" minH="100%">
+    <Flex justifyContent="center" alignItems="center" h="100%">
       <Spinner
         thickness="4px"
         speed="0.65s"

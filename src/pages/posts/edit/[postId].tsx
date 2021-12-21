@@ -6,46 +6,70 @@ import { useAuth } from '~/src/hooks/useAuth'
 import { apiClient } from '~/src/utils/apiClient'
 import { useRouter } from 'next/router'
 import { useSnagBar } from '~/src/hooks/useToast'
-import { VFC } from 'react'
+import { useEffect, VFC } from 'react'
+import useAspidaSWR from '@aspida/swr'
 
 type Inputs = {
   title: string
   body: string
 }
 
-const PostsCreate: VFC = () => {
-  const { token, userState } = useAuth()
-  const { snagBar } = useSnagBar()
+const PostsEdit: VFC = () => {
   const router = useRouter()
+  const { postId } = router.query
+  const { token } = useAuth()
+  const { snagBar } = useSnagBar()
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    setValue
   } = useForm<Inputs>()
 
-  const createPost = async (authorId: number, title: string, body: string) =>
-    await apiClient.posts.post({
+  const { data: post, error } = useAspidaSWR(
+    apiClient.posts._postId(Number(postId)),
+    {
       headers: {
         authorization: `Bearer ${token}`
       },
-      body: {
-        authorId,
-        title,
-        body
-      }
-    })
+      enabled: !!token
+    }
+  )
+
+  const updatePost = async (title: string, body: string) => {
+    if (token && postId) {
+      await apiClient.posts._postId(+postId).patch({
+        headers: {
+          authorization: `Bearer ${token}`
+        },
+        body: {
+          title,
+          body
+        }
+      })
+    } else {
+      throw error
+    }
+  }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       if (token) {
-        await createPost(userState.id, data.title, data.body)
+        await updatePost(data.title, data.body)
       }
-      snagBar('投稿しました', 'bottom', 'success')
-      router.push('/')
+      snagBar('更新しました', 'bottom', 'success')
+      router.push(`/posts/${postId}`)
     } catch (error) {
       console.log(error)
     }
   }
+
+  useEffect(() => {
+    if (post) {
+      setValue('title', post.title)
+      setValue('body', post.body)
+    }
+  }, [post])
 
   return (
     <Layout>
@@ -55,18 +79,18 @@ const PostsCreate: VFC = () => {
         </Box>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input
+            {...register('title', { required: true })}
             placeholder="タイトル"
             mb={4}
-            {...register('title', { required: true })}
           />
           <Textarea
+            {...register('body', { required: true })}
             placeholder="本文"
             mb={4}
             rows={10}
-            {...register('body', { required: true })}
           />
           <Button type="submit" colorScheme="teal">
-            Post
+            更新
           </Button>
           <Box>
             {errors.title ||
@@ -80,4 +104,4 @@ const PostsCreate: VFC = () => {
   )
 }
 
-export default PostsCreate
+export default PostsEdit
