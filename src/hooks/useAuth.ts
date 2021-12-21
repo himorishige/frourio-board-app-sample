@@ -30,7 +30,7 @@ export const useAuth = () => {
 
   useEffect(() => {
     ;(async () => {
-      if (token && user?.email && user?.name) {
+      if (!isLoading && token && user?.email && user?.name) {
         await apiClient.user
           .post({
             body: {

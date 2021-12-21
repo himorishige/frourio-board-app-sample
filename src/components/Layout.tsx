@@ -21,13 +21,13 @@ export const Layout: VFC<Props> = (props) => {
     )
   }
 
-  if (!isAuthenticated) {
-    return <Login />
-  }
-
   if (error) {
     console.log(error)
     return <div>There was an error loading your subscriptions.</div>
+  }
+
+  if (!isAuthenticated) {
+    return <Login />
   }
 
   return (
