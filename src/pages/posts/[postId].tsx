@@ -17,6 +17,7 @@ import React, { useCallback, useRef, VFC } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
+import { CommentItem } from '~/src/components/CommentItem'
 
 type Inputs = {
   body: string
@@ -203,48 +204,15 @@ const PostsDetail: VFC = () => {
           )}
           {!!post.comment.length &&
             post.comment.map((item, i, array) => (
-              <React.Fragment key={item.id}>
-                <Box ref={array.length - 1 === i ? scrollRef : null}>
-                  <Flex justifyContent="space-between" alignItems="center">
-                    <Box>
-                      <Tag
-                        py={1}
-                        size="md"
-                        colorScheme="gray"
-                        borderRadius="full"
-                      >
-                        <Avatar
-                          src={item.owner?.icon ?? 'https://bit.ly/broken-link'}
-                          size="xs"
-                          name={item.owner?.name ?? 'NO NAME'}
-                          mr={2}
-                        />
-                        <TagLabel mr={1}>{item.owner?.name}</TagLabel>
-                        <TagLabel>{echoLocalDateTime(item.createdAt)}</TagLabel>
-                      </Tag>
-                    </Box>
-                    {item.ownerId === userState.id && (
-                      <Box>
-                        <Button
-                          colorScheme="red"
-                          onClick={() => deleteComment(item.id)}
-                        >
-                          削除
-                        </Button>
-                      </Box>
-                    )}
-                  </Flex>
-                  <Box p={4}>
-                    <ReactMarkdown
-                      components={ChakraUIRenderer()}
-                      remarkPlugins={[remarkGfm]}
-                      skipHtml
-                    >
-                      {item.body}
-                    </ReactMarkdown>
-                  </Box>
-                </Box>
-              </React.Fragment>
+              <CommentItem
+                key={item.id}
+                scrollRef={scrollRef}
+                userState={userState}
+                comment={item}
+                deleteComment={deleteComment}
+                length={array.length}
+                index={i}
+              />
             ))}
         </Box>
         <Box pos="fixed" bottom="0" left="0" w="100%" bgColor="cyan.800" py={6}>
