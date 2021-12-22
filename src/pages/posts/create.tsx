@@ -7,11 +7,24 @@ import { apiClient } from '~/src/utils/apiClient'
 import { useRouter } from 'next/router'
 import { useSnagBar } from '~/src/hooks/useToast'
 import { VFC } from 'react'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 type Inputs = {
   title: string
   body: string
 }
+
+const schema = yup.object({
+  title: yup
+    .string()
+    .max(200, '200文字以内で登録をしてください。')
+    .required('タイトルを入力してください。'),
+  body: yup
+    .string()
+    .max(2000, '2000文字以内で登録をしてください。')
+    .required('コメントを入力してください。')
+})
 
 const PostsCreate: VFC = () => {
   const { token, userState } = useAuth()
@@ -21,7 +34,9 @@ const PostsCreate: VFC = () => {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({
+    resolver: yupResolver(schema)
+  })
 
   const createPost = async (authorId: number, title: string, body: string) =>
     await apiClient.posts.post({
@@ -68,11 +83,13 @@ const PostsCreate: VFC = () => {
           <Button type="submit" colorScheme="teal">
             Post
           </Button>
-          <Box>
-            {errors.title ||
-              (errors.body && (
-                <Text color="red">タイトルと本文は必須です</Text>
-              ))}
+          <Box mt={4}>
+            {'title' in errors && (
+              <Text color="red">{errors.title?.message}</Text>
+            )}
+            {'body' in errors && (
+              <Text color="red">{errors.body?.message}</Text>
+            )}
           </Box>
         </form>
       </Box>

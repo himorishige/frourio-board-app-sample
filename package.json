@@ -36,6 +36,7 @@
     "@chakra-ui/react": "^1.7.3",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@hookform/resolvers": "^2.8.5",
     "@prisma/client": "^3.6.0",
     "axios": "^0.21.1",
     "chakra-ui-markdown-renderer": "^4.0.0",
@@ -50,7 +51,8 @@
     "react-markdown": "^7.1.1",
     "recoil": "^0.5.2",
     "remark-gfm": "^3.0.1",
-    "swr": "^0.5.5"
+    "swr": "^0.5.5",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@testing-library/react": "^11.2.6",

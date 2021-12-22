@@ -18,10 +18,19 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import ChakraUIRenderer from 'chakra-ui-markdown-renderer'
 import { CommentItem } from '~/src/components/CommentItem'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 type Inputs = {
   body: string
 }
+
+const schema = yup.object({
+  body: yup
+    .string()
+    .max(200, '200文字以内で登録をしてください。')
+    .required('コメントを入力してください。')
+})
 
 const PostsDetail: VFC = () => {
   const router = useRouter()
@@ -32,7 +41,9 @@ const PostsDetail: VFC = () => {
     handleSubmit,
     reset,
     formState: { errors }
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({
+    resolver: yupResolver(schema)
+  })
   const { snagBar } = useSnagBar()
   const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -233,7 +244,9 @@ const PostsDetail: VFC = () => {
                   コメントの投稿
                 </Button>
                 <Box mt={4}>
-                  {errors.body && <Text color="red">コメントが未入力です</Text>}
+                  {'body' in errors && (
+                    <Text color="white">{errors.body?.message}</Text>
+                  )}
                 </Box>
               </form>
             </Box>
