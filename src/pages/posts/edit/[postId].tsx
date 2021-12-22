@@ -8,11 +8,24 @@ import { useRouter } from 'next/router'
 import { useSnagBar } from '~/src/hooks/useToast'
 import { useEffect, VFC } from 'react'
 import useAspidaSWR from '@aspida/swr'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 type Inputs = {
   title: string
   body: string
 }
+
+const schema = yup.object({
+  title: yup
+    .string()
+    .max(200, '200文字以内で登録をしてください。')
+    .required('タイトルを入力してください。'),
+  body: yup
+    .string()
+    .max(2000, '2000文字以内で登録をしてください。')
+    .required('コメントを入力してください。')
+})
 
 const PostsEdit: VFC = () => {
   const router = useRouter()
@@ -24,7 +37,9 @@ const PostsEdit: VFC = () => {
     handleSubmit,
     formState: { errors },
     setValue
-  } = useForm<Inputs>()
+  } = useForm<Inputs>({
+    resolver: yupResolver(schema)
+  })
 
   const { data: post, error } = useAspidaSWR(
     apiClient.posts._postId(Number(postId)),
@@ -92,11 +107,13 @@ const PostsEdit: VFC = () => {
           <Button type="submit" colorScheme="teal">
             更新
           </Button>
-          <Box>
-            {errors.title ||
-              (errors.body && (
-                <Text color="red">タイトルと本文は必須です</Text>
-              ))}
+          <Box mt={4}>
+            {'title' in errors && (
+              <Text color="red">{errors.title?.message}</Text>
+            )}
+            {'body' in errors && (
+              <Text color="red">{errors.body?.message}</Text>
+            )}
           </Box>
         </form>
       </Box>
