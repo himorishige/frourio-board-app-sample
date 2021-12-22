@@ -1,8 +1,6 @@
-import '~/src/styles/globals.css'
-import type { AppProps } from 'next/app'
 import { Auth0Provider } from '@auth0/auth0-react'
 import { ChakraProvider } from '@chakra-ui/react'
-import { theme } from '~/src/lib/theme'
+import type { AppProps } from 'next/app'
 import { RecoilRoot } from 'recoil'
 import {
   AUTH0_AUDIENCE,
@@ -10,6 +8,8 @@ import {
   AUTH0_DOMAIN,
   AUTH0_REDIRECT_URI
 } from '~/src/constants'
+import { theme } from '~/src/lib/theme'
+import '~/src/styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

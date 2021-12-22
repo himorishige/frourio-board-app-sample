@@ -1,11 +1,11 @@
-import { useAuth } from '~/src/hooks/useAuth'
 import useAspidaSWR from '@aspida/swr'
-import { apiClient } from '~/src/utils/apiClient'
-import { Layout } from '~/src/components/Layout'
 import { Box, Flex } from '@chakra-ui/layout'
-import { PostItem } from '~/src/components/PostItem'
 import { VFC } from 'react'
-import { Loading } from '../components/Loading'
+import { Layout } from '~/src/components/Layout'
+import { Loading } from '~/src/components/Loading'
+import { PostItem } from '~/src/components/PostItem'
+import { useAuth } from '~/src/hooks/useAuth'
+import { apiClient } from '~/src/utils/apiClient'
 
 const Home: VFC = () => {
   const { token } = useAuth()

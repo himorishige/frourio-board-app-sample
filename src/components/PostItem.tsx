@@ -4,8 +4,8 @@ import { ChatIcon } from '@chakra-ui/icons'
 import { Box, Flex, Heading } from '@chakra-ui/layout'
 import { Tag, TagLabel } from '@chakra-ui/tag'
 import React, { VFC } from 'react'
-import { echoLocalDateTime } from '../utils/dateUtil'
-import { WrappedLink } from './Link'
+import { WrappedLink } from '~/src/components/Link'
+import { echoLocalDateTime } from '~/src/utils/dateUtil'
 
 type Props = {
   post: Post & {

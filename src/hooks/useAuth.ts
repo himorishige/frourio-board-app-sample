@@ -1,9 +1,9 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { useEffect, useState } from 'react'
-import { apiClient } from '~/src/utils/apiClient'
 import { useRecoilState } from 'recoil'
-import { userInitialState } from '../recoil/atoms'
-import { AUTH0_AUDIENCE } from '../constants'
+import { AUTH0_AUDIENCE } from '~/src/constants'
+import { userInitialState } from '~/src/recoil/atoms'
+import { apiClient } from '~/src/utils/apiClient'
 
 export const useAuth = () => {
   const {

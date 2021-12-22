@@ -1,10 +1,10 @@
-import { useAuth } from '~/src/hooks/useAuth'
-import { Header } from '~/src/components/Header'
-import { Footer } from '~/src/components/Footer'
 import { Container, Flex } from '@chakra-ui/layout'
-import { Login } from '~/src/components/Login'
-import { Loading } from '~/src/components/Loading'
 import { VFC } from 'react'
+import { Footer } from '~/src/components/Footer'
+import { Header } from '~/src/components/Header'
+import { Loading } from '~/src/components/Loading'
+import { Login } from '~/src/components/Login'
+import { useAuth } from '~/src/hooks/useAuth'
 
 type Props = {
   children: React.ReactNode
