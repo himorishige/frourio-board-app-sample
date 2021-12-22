@@ -1,5 +1,5 @@
-import { defineController } from './$relay'
 import { getUserInfoById, upsertUserInfo } from '$/service/user'
+import { defineController } from './$relay'
 
 export default defineController(
   { getUserInfoById, upsertUserInfo },

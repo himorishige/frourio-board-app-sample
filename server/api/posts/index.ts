@@ -1,6 +1,6 @@
 import { AuthHeader } from '$/types'
 import { CreatePostBody } from '$/validators'
-import type { Post, Comment, User } from '$prisma/client'
+import type { Comment, Post, User } from '$prisma/client'
 
 export type Methods = {
   get: {

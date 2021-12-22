@@ -1,4 +1,4 @@
-import { getPosts, createPost } from '$/service/posts'
+import { createPost, getPosts } from '$/service/posts'
 import { defineController } from './$relay'
 
 export default defineController(

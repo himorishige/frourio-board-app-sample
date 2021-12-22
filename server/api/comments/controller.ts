@@ -1,5 +1,5 @@
-import { defineController } from './$relay'
 import { createComment, getComments } from '$/service/comments'
+import { defineController } from './$relay'
 
 export default defineController(
   { createComment, getComments },

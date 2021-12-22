@@ -1,13 +1,13 @@
-import { depend } from 'velona'
 import {
+  create,
   findMany,
   findUnique,
-  create,
-  update,
-  remove
+  remove,
+  update
 } from '$/repository/comments'
 import { CreateCommentBody, UpdateCommentBody } from '$/validators'
 import { Comment } from '.prisma/client'
+import { depend } from 'velona'
 
 export const getComments = depend(
   { findMany },

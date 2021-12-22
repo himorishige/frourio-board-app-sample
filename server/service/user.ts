@@ -1,7 +1,7 @@
-import type { User } from '$prisma/client'
-import { UpsertUserInfoBody } from '$/validators'
-import { depend } from 'velona'
 import { userRepository } from '$/repository/user'
+import { UpsertUserInfoBody } from '$/validators'
+import type { User } from '$prisma/client'
+import { depend } from 'velona'
 
 export const getUserInfoById = depend(
   { userRepository },

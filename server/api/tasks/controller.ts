@@ -1,5 +1,5 @@
+import { createTask, getTasks } from '$/service/tasks'
 import { defineController } from './$relay'
-import { getTasks, createTask } from '$/service/tasks'
 
 const print = (text: string) => console.log(text)
 

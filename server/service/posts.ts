@@ -1,13 +1,13 @@
-import { depend } from 'velona'
 import {
-  findUnique,
-  findMany,
   create,
-  update,
-  remove
+  findMany,
+  findUnique,
+  remove,
+  update
 } from '$/repository/posts'
 import { CreatePostBody, UpdatePostBody } from '$/validators'
 import { Post } from '.prisma/client'
+import { depend } from 'velona'
 
 export const getPosts = depend(
   { findMany },

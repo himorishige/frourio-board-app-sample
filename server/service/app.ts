@@ -1,17 +1,17 @@
-import path from 'path'
-import Fastify, { FastifyServerFactory } from 'fastify'
-import helmet from 'fastify-helmet'
-import cors from 'fastify-cors'
-import fastifyStatic from 'fastify-static'
-import { fastifyAuth0Verify } from 'fastify-auth0-verify'
+import server from '$/$server'
 import {
   API_BASE_PATH,
   API_UPLOAD_DIR,
+  AUTH0_AUDIENCE,
   AUTH0_DOMAIN,
-  AUTH0_SECRET,
-  AUTH0_AUDIENCE
+  AUTH0_SECRET
 } from '$/service/envValues'
-import server from '$/$server'
+import Fastify, { FastifyServerFactory } from 'fastify'
+import { fastifyAuth0Verify } from 'fastify-auth0-verify'
+import cors from 'fastify-cors'
+import helmet from 'fastify-helmet'
+import fastifyStatic from 'fastify-static'
+import path from 'path'
 
 export const init = (serverFactory?: FastifyServerFactory) => {
   const app = Fastify({ serverFactory })

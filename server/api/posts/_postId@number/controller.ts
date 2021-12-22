@@ -1,5 +1,5 @@
+import { deletePost, getPost, updatePost } from '$/service/posts'
 import { defineController } from './$relay'
-import { updatePost, deletePost, getPost } from '$/service/posts'
 
 export default defineController(
   { updatePost, deletePost, getPost },
