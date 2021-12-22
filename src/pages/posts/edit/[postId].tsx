@@ -73,7 +73,7 @@ const PostsEdit: VFC = () => {
         await updatePost(data.title, data.body)
       }
       snagBar('更新しました', 'bottom', 'success')
-      router.push(`/posts/${postId}`)
+      await router.push(`/posts/${postId}`)
     } catch (error) {
       console.log(error)
     }

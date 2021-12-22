@@ -21,8 +21,8 @@ export const Header: VFC = () => {
   const router = useRouter()
   const { user, logout } = useAuth()
 
-  const handleNewPost = () => {
-    router.push('/posts/create')
+  const handleNewPost = async () => {
+    await router.push('/posts/create')
   }
 
   return (

@@ -56,7 +56,7 @@ const PostsCreate: VFC = () => {
         await createPost(userState.id, data.title, data.body)
       }
       snagBar('投稿しました', 'bottom', 'success')
-      router.push('/')
+      await router.push('/')
     } catch (error) {
       console.log(error)
     }
