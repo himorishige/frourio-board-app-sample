@@ -45,7 +45,7 @@ export const useAuth = () => {
           .then((state) => setUserState(state.body))
       }
     })()
-  }, [])
+  }, [token])
 
   return { token, user, isAuthenticated, isLoading, error, logout, userState }
 }
